@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import api
 
 app = Flask(__name__)
 
@@ -9,10 +10,29 @@ def default():
 
 
 @app.route("/status", methods=['GET'])
-def getStatus():
+def status():
     return jsonify({
-        "status": "looks good!"
+        "status": "online"
     })
+
+
+@app.route("/quote", methods=['GET'])
+def quote():
+    mode = request.args.get("mode")
+    if (mode == "today"):
+        result = api.getTodayQuote()[0]
+        return jsonify({
+            'q': result['q'],
+            'a': result['a'],
+            'h': result['h']
+        })
+    elif (mode == "random"):
+        result = api.getRandomQuote()[0]
+        return jsonify({
+            'q': result['q'],
+            'a': result['a'],
+            'h': result['h']
+        })
 
 
 if __name__ == '__main__':
