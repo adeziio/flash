@@ -1,5 +1,6 @@
 # freeflash
-## This is a collection of API endpoints for my own usage.
+## This is my personal backend.
+## A collection of open API endpoints made simple.
 
 # Get Started
 ## $ pip install -r .\requirements.txt
