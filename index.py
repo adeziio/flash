@@ -48,21 +48,25 @@ def google():
     search = body["search"]
     if (mode == "image"):
         return api.getGoogleImage(search)
-
     elif (mode == "search"):
         return api.getGoogleSearch(search)
+    return "Invalid parameter."
 
 
 @app.route("/sentiment-analysis", methods=['GET'])
 def sentimentAnalysis():
     text = request.args.get("text")
-    return api.getSentimentAnalysis(text)
+    if (text):
+        return api.getSentimentAnalysis(text)
+    return "Invalid parameter."
 
 
 @app.route("/yoshii", methods=['GET'])
 def yoshii():
     input = request.args.get("input")
-    return api.getYoshiiChatbot(input)
+    if (input):
+        return api.getYoshiiChatbot(input)
+    return "Invalid parameter."
 
 
 if __name__ == '__main__':
