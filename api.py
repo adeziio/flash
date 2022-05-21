@@ -23,6 +23,10 @@ def getJoke():
     return requests.get("https://v2.jokeapi.dev/joke/Any?type=single").json()
 
 
+def getInsult(who):
+    return requests.get("https://insult.mattbas.org/api/en/insult.txt?who="+who.capitalize()).text
+
+
 def getGoogleImage(search):
     headers = {
         'x-rapidapi-host': "google-search3.p.rapidapi.com",

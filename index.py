@@ -41,6 +41,14 @@ def joke():
     return api.getJoke()
 
 
+@app.route("/insult", methods=['GET'])
+def insult():
+    who = request.args.get("who")
+    if (who):
+        return api.getInsult(who)
+    return "Invalid parameter."
+
+
 @app.route("/google", methods=['POST'])
 def google():
     body = request.json
