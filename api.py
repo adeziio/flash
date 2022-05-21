@@ -4,7 +4,7 @@ import json
 
 
 def checkAuth(key):
-    if (key == os.getenv('x-api-key')):
+    if (key == os.getenv('FREEFLASH_API_KEY')):
         return True
     return False
 

@@ -18,8 +18,8 @@ def status():
 
 @app.route("/quote", methods=['GET'])
 def quote():
-    auth = request.headers.get("x-api-key")
-    if (auth):
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
         mode = request.args.get("mode")
         if (mode == "today"):
             return api.getTodayQuote()
@@ -31,8 +31,8 @@ def quote():
 
 @app.route("/cat", methods=['GET'])
 def cat():
-    auth = request.headers.get("x-api-key")
-    if (auth):
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
         mode = request.args.get("mode")
         if (mode == "image"):
             return api.getCatImage()
@@ -44,16 +44,16 @@ def cat():
 
 @app.route("/joke", methods=['GET'])
 def joke():
-    auth = request.headers.get("x-api-key")
-    if (auth):
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
         return api.getJoke()
     return "Unauthorized."
 
 
 @app.route("/insult", methods=['GET'])
 def insult():
-    auth = request.headers.get("x-api-key")
-    if (auth):
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
         who = request.args.get("who")
         if (who):
             return api.getInsult(who)
@@ -63,8 +63,8 @@ def insult():
 
 @app.route("/google", methods=['POST'])
 def google():
-    auth = request.headers.get("x-api-key")
-    if (auth):
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
         body = request.json
         mode = body["mode"]
         search = body["search"]
@@ -78,8 +78,8 @@ def google():
 
 @app.route("/sentiment-analysis", methods=['GET'])
 def sentimentAnalysis():
-    auth = request.headers.get("x-api-key")
-    if (auth):
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
         text = request.args.get("text")
         if (text):
             return api.getSentimentAnalysis(text)
@@ -89,8 +89,8 @@ def sentimentAnalysis():
 
 @app.route("/yoshii", methods=['GET'])
 def yoshii():
-    auth = request.headers.get("x-api-key")
-    if (auth):
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
         input = request.args.get("input")
         if (input):
             return api.getYoshiiChatbot(input)
