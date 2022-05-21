@@ -20,19 +20,49 @@ def status():
 def quote():
     mode = request.args.get("mode")
     if (mode == "today"):
-        result = api.getTodayQuote()[0]
-        return jsonify({
-            'q': result['q'],
-            'a': result['a'],
-            'h': result['h']
-        })
+        return api.getTodayQuote()
     elif (mode == "random"):
-        result = api.getRandomQuote()[0]
-        return jsonify({
-            'q': result['q'],
-            'a': result['a'],
-            'h': result['h']
-        })
+        return api.getRandomQuote()
+    return "Invalid parameter."
+
+
+@app.route("/cat", methods=['GET'])
+def cat():
+    mode = request.args.get("mode")
+    if (mode == "image"):
+        return api.getCatImage()
+    elif (mode == "fact"):
+        return api.getCatFact()
+    return "Invalid parameter."
+
+
+@app.route("/joke", methods=['GET'])
+def joke():
+    return api.getJoke()
+
+
+@app.route("/google", methods=['POST'])
+def google():
+    body = request.json
+    mode = body["mode"]
+    search = body["search"]
+    if (mode == "image"):
+        return api.getGoogleImage(search)
+
+    elif (mode == "search"):
+        return api.getGoogleSearch(search)
+
+
+@app.route("/sentiment-analysis", methods=['GET'])
+def sentimentAnalysis():
+    text = request.args.get("text")
+    return api.getSentimentAnalysis(text)
+
+
+@app.route("/yoshii", methods=['GET'])
+def yoshii():
+    input = request.args.get("input")
+    return api.getYoshiiChatbot(input)
 
 
 if __name__ == '__main__':
