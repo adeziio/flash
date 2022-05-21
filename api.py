@@ -3,6 +3,12 @@ import requests
 import json
 
 
+def checkAuth(key):
+    if (key == os.getenv('x-api-key')):
+        return True
+    return False
+
+
 def getRandomQuote():
     return requests.get("https://zenquotes.io/api/random").json()[0]
 

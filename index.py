@@ -18,63 +18,84 @@ def status():
 
 @app.route("/quote", methods=['GET'])
 def quote():
-    mode = request.args.get("mode")
-    if (mode == "today"):
-        return api.getTodayQuote()
-    elif (mode == "random"):
-        return api.getRandomQuote()
-    return "Invalid parameter."
+    auth = request.headers.get("x-api-key")
+    if (auth):
+        mode = request.args.get("mode")
+        if (mode == "today"):
+            return api.getTodayQuote()
+        elif (mode == "random"):
+            return api.getRandomQuote()
+        return "Invalid parameter."
+    return "Unauthorized."
 
 
 @app.route("/cat", methods=['GET'])
 def cat():
-    mode = request.args.get("mode")
-    if (mode == "image"):
-        return api.getCatImage()
-    elif (mode == "fact"):
-        return api.getCatFact()
-    return "Invalid parameter."
+    auth = request.headers.get("x-api-key")
+    if (auth):
+        mode = request.args.get("mode")
+        if (mode == "image"):
+            return api.getCatImage()
+        elif (mode == "fact"):
+            return api.getCatFact()
+        return "Invalid parameter."
+    return "Unauthorized."
 
 
 @app.route("/joke", methods=['GET'])
 def joke():
-    return api.getJoke()
+    auth = request.headers.get("x-api-key")
+    if (auth):
+        return api.getJoke()
+    return "Unauthorized."
 
 
 @app.route("/insult", methods=['GET'])
 def insult():
-    who = request.args.get("who")
-    if (who):
-        return api.getInsult(who)
-    return "Invalid parameter."
+    auth = request.headers.get("x-api-key")
+    if (auth):
+        who = request.args.get("who")
+        if (who):
+            return api.getInsult(who)
+        return "Invalid parameter."
+    return "Unauthorized."
 
 
 @app.route("/google", methods=['POST'])
 def google():
-    body = request.json
-    mode = body["mode"]
-    search = body["search"]
-    if (mode == "image"):
-        return api.getGoogleImage(search)
-    elif (mode == "search"):
-        return api.getGoogleSearch(search)
-    return "Invalid parameter."
+    auth = request.headers.get("x-api-key")
+    if (auth):
+        body = request.json
+        mode = body["mode"]
+        search = body["search"]
+        if (mode == "image"):
+            return api.getGoogleImage(search)
+        elif (mode == "search"):
+            return api.getGoogleSearch(search)
+        return "Invalid parameter."
+    return "Unauthorized."
 
 
 @app.route("/sentiment-analysis", methods=['GET'])
 def sentimentAnalysis():
-    text = request.args.get("text")
-    if (text):
-        return api.getSentimentAnalysis(text)
-    return "Invalid parameter."
+    auth = request.headers.get("x-api-key")
+    if (auth):
+        text = request.args.get("text")
+        if (text):
+            return api.getSentimentAnalysis(text)
+        return "Invalid parameter."
+    return "Unauthorized."
 
 
 @app.route("/yoshii", methods=['GET'])
 def yoshii():
-    input = request.args.get("input")
-    if (input):
-        return api.getYoshiiChatbot(input)
-    return "Invalid parameter."
+    auth = request.headers.get("x-api-key")
+    if (auth):
+        input = request.args.get("input")
+        if (input):
+            return api.getYoshiiChatbot(input)
+        return "Invalid parameter."
+    return "Unauthorized."
 
 
 if __name__ == '__main__':
