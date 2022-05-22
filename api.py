@@ -1,4 +1,5 @@
 import os
+import re
 import requests
 import json
 
@@ -126,7 +127,9 @@ def getFileExtraction(file):
 
 def getYoshiiChatbot(input):
     input = input.lower().replace("yoshii", "RoboMatic")
-    input = input.lower().replace("+", "plus")
+    input = input.lower().replace("+", "%2B")
+    input = input.lower().replace("'", "")
+
     url = "https://robomatic-ai.p.rapidapi.com/api.php"
 
     payload = "in=" + input + \
@@ -140,14 +143,15 @@ def getYoshiiChatbot(input):
 
     res = requests.request(
         "POST", url, data=payload, headers=headers).json()
-    out = res['out']
-    out = out.replace("I said it before, ", "")
-    out = out.replace("RoboMatic", "yoshii")
-    out = out.replace("Ehab Elagizy", "Aden Tran")
-    out = out.replace("back in 2001", "back in 2021")
-    out = out.replace("since 1995", "since 2021")
-    out = out.replace("Later in 2011", "In 2021")
-    out = out.replace("Egyptian", "Vietnamese")
+    ouput = res['out']
+    ouput = ouput.replace("I said it before, ", "")
+    ouput = ouput.replace("RoboMatic", "yoshii")
+    ouput = ouput.replace("Ehab Elagizy", "Aden Tran")
+    ouput = ouput.replace("back in 2001", "back in 2021")
+    ouput = ouput.replace("since 1995", "since 2021")
+    ouput = ouput.replace("Later in 2011", "In 2021")
+    ouput = ouput.replace("Egyptian", "Vietnamese")
+
     return {
-        "out": out
+        "ouput": ouput
     }

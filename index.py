@@ -134,11 +134,12 @@ def fileExtraction():
     return "Unauthorized."
 
 
-@app.route("/yoshii", methods=['GET'])
+@app.route("/yoshii", methods=['POST'])
 def yoshii():
     key = request.headers.get("FREEFLASH_API_KEY")
     if (api.checkAuth(key)):
-        input = request.args.get("input")
+        body = request.json
+        input = body["input"]
         if (input):
             return api.getYoshiiChatbot(input)
         return "Invalid parameter."
