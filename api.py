@@ -69,7 +69,7 @@ def getSentimentAnalysis(text):
 
 def getYoshiiChatbot(input):
     input = input.lower().replace("yoshii", "RoboMatic")
-    input = input.lower().replace("+", "%2B")
+    input = input.lower().replace("+", "plus")
     url = "https://robomatic-ai.p.rapidapi.com/api.php"
 
     payload = "in=" + input + \
