@@ -89,6 +89,28 @@ def sentimentAnalysis():
     return "Unauthorized."
 
 
+@app.route("/summarize-text", methods=['GET'])
+def summarizeText():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
+        text = request.args.get("text")
+        if (text):
+            return api.getSummarizeText(text)
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
+@app.route("/language-detection", methods=['GET'])
+def languageDetection():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
+        text = request.args.get("text")
+        if (text):
+            return api.getLanguageDetection(text)
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
 @app.route("/yoshii", methods=['GET'])
 def yoshii():
     key = request.headers.get("FREEFLASH_API_KEY")

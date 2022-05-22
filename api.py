@@ -67,6 +67,37 @@ def getSentimentAnalysis(text):
         payload), headers=headers).json()
 
 
+def getSummarizeText(text):
+    url = "https://text-analysis12.p.rapidapi.com/summarize-text/api/v1.1"
+    payload = {
+        "language": "english",
+        "text": text
+    }
+    headers = {
+        'content-type': "application/json",
+        'x-rapidapi-host': "text-analysis12.p.rapidapi.com",
+        'x-rapidapi-key': os.getenv("RAPID_API_KEY")
+    }
+
+    return requests.post(url, data=json.dumps(
+        payload), headers=headers).json()
+
+
+def getLanguageDetection(text):
+    url = "https://text-analysis12.p.rapidapi.com/language-detection/api/v1.1"
+    payload = {
+        "text": text
+    }
+    headers = {
+        'content-type': "application/json",
+        'x-rapidapi-host': "text-analysis12.p.rapidapi.com",
+        'x-rapidapi-key': os.getenv("RAPID_API_KEY")
+    }
+
+    return requests.post(url, data=json.dumps(
+        payload), headers=headers).json()
+
+
 def getYoshiiChatbot(input):
     input = input.lower().replace("yoshii", "RoboMatic")
     input = input.lower().replace("+", "plus")
