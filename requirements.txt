@@ -1,2 +1,4 @@
+pip
 Flask
 requests
+flask-cors
