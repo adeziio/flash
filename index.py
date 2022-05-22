@@ -111,6 +111,29 @@ def languageDetection():
     return "Unauthorized."
 
 
+@app.route("/website-extraction", methods=['POST'])
+def websiteExtraction():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
+        body = request.json
+        text = body["url"]
+        if (text):
+            return api.getWebsiteExtraction(text)
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
+@app.route("/file-extraction", methods=['POST'])
+def fileExtraction():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (api.checkAuth(key)):
+        file = request.files['input_file']
+        if (file):
+            return api.getFileExtraction(file)
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
 @app.route("/yoshii", methods=['GET'])
 def yoshii():
     key = request.headers.get("FREEFLASH_API_KEY")

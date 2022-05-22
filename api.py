@@ -53,49 +53,75 @@ def getGoogleSearch(search):
 
 def getSentimentAnalysis(text):
     url = "https://text-analysis12.p.rapidapi.com/sentiment-analysis/api/v1.1"
-    payload = {
+    payload = json.dumps({
         "language": "english",
         "text": text
-    }
+    })
     headers = {
         'content-type': "application/json",
         'x-rapidapi-host': "text-analysis12.p.rapidapi.com",
         'x-rapidapi-key': os.getenv("RAPID_API_KEY")
     }
 
-    return requests.post(url, data=json.dumps(
-        payload), headers=headers).json()
+    return requests.post(url, data=payload, headers=headers).json()
 
 
 def getSummarizeText(text):
     url = "https://text-analysis12.p.rapidapi.com/summarize-text/api/v1.1"
-    payload = {
+    payload = json.dumps({
         "language": "english",
         "text": text
-    }
+    })
     headers = {
         'content-type': "application/json",
         'x-rapidapi-host': "text-analysis12.p.rapidapi.com",
         'x-rapidapi-key': os.getenv("RAPID_API_KEY")
     }
 
-    return requests.post(url, data=json.dumps(
-        payload), headers=headers).json()
+    return requests.post(url, data=payload, headers=headers).json()
 
 
 def getLanguageDetection(text):
     url = "https://text-analysis12.p.rapidapi.com/language-detection/api/v1.1"
-    payload = {
+    payload = json.dumps({
         "text": text
-    }
+    })
     headers = {
         'content-type': "application/json",
         'x-rapidapi-host': "text-analysis12.p.rapidapi.com",
         'x-rapidapi-key': os.getenv("RAPID_API_KEY")
     }
 
-    return requests.post(url, data=json.dumps(
-        payload), headers=headers).json()
+    return requests.post(url, data=payload, headers=headers).json()
+
+
+def getWebsiteExtraction(text):
+    url = "https://text-analysis12.p.rapidapi.com/website-extraction/api/v1.3"
+    payload = "language=english&url=" + text
+    headers = {
+        'content-type': "application/x-www-form-urlencoded",
+        'x-rapidapi-host': "text-analysis12.p.rapidapi.com",
+        'x-rapidapi-key': os.getenv("RAPID_API_KEY")
+    }
+
+    return requests.post(url, data=payload, headers=headers).json()
+
+
+def getFileExtraction(file):
+    # todo: need to fix this api
+    url = "https://text-analysis12.p.rapidapi.com/text-mining/api/v1.1"
+
+    payload = {
+        "input_file": file
+    }
+
+    headers = {
+        "content-type": "multipart/form-data; boundary=---011000010111000001101001",
+        "x-rapidapi-host": "text-analysis12.p.rapidapi.com",
+        'x-rapidapi-key': os.getenv("RAPID_API_KEY")
+    }
+    res = requests.post(url, data=payload, headers=headers)
+    return res.json()
 
 
 def getYoshiiChatbot(input):
