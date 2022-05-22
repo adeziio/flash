@@ -143,15 +143,15 @@ def getYoshiiChatbot(input):
 
     res = requests.request(
         "POST", url, data=payload, headers=headers).json()
-    ouput = res['out']
-    ouput = ouput.replace("I said it before, ", "")
-    ouput = ouput.replace("RoboMatic", "yoshii")
-    ouput = ouput.replace("Ehab Elagizy", "Aden Tran")
-    ouput = ouput.replace("back in 2001", "back in 2021")
-    ouput = ouput.replace("since 1995", "since 2021")
-    ouput = ouput.replace("Later in 2011", "In 2021")
-    ouput = ouput.replace("Egyptian", "Vietnamese")
+    output = res['out']
+    output = output.replace("I said it before, ", "")
+    output = output.replace("RoboMatic", "yoshii")
+    output = output.replace("Ehab Elagizy", "Aden Tran")
+    output = output.replace("back in 2001", "back in 2021")
+    output = output.replace("since 1995", "since 2021")
+    output = output.replace("Later in 2011", "In 2021")
+    output = output.replace("Egyptian", "Vietnamese")
 
     return {
-        "ouput": ouput
+        "output": output
     }
