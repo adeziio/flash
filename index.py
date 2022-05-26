@@ -18,6 +18,13 @@ def status():
     })
 
 
+@app.route("/get_my_ip", methods=["GET"])
+def get_my_ip():
+    return jsonify({
+        'ip': request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+    }), 200
+
+
 @app.route("/quote", methods=['GET'])
 def quote():
     key = request.headers.get("FREEFLASH_API_KEY")
