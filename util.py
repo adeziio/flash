@@ -105,8 +105,9 @@ def getDiskInfo():
         output += f"  Percentage: {partition_usage.percent}%" + "\n"
     # get IO statistics since boot
     disk_io = psutil.disk_io_counters()
-    output += f"Total read: {convert_bytes(disk_io.read_bytes)}" + "\n"
-    output += f"Total write: {convert_bytes(disk_io.write_bytes)}" + "\n"
+    if (disk_io):
+        output += f"Total read: {convert_bytes(disk_io.read_bytes)}" + "\n"
+        output += f"Total write: {convert_bytes(disk_io.write_bytes)}" + "\n"
     output += "\n"
     return output
 
