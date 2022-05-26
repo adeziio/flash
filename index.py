@@ -40,8 +40,8 @@ def get_my_ip():
     ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
     msg = Message(
         f'{uname.node}',
-        sender='ipfreeflash@yahoo.com',
-        recipients=['ipfreeflash@yahoo.com']
+        sender=os.getenv('FREEFLASH_MAIL_USERNAME'),
+        recipients=[os.getenv('FREEFLASH_MAIL_USERNAME')]
     )
     output = f'IPv4: {ip}' + "\n\n"
     output += util.getSystemInfo()
