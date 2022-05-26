@@ -1,13 +1,6 @@
 import os
-import re
 import requests
 import json
-
-
-def checkAuth(key):
-    if (key == os.getenv('FREEFLASH_API_KEY')):
-        return True
-    return False
 
 
 def getRandomQuote():
