@@ -3,7 +3,6 @@ import os
 import platform
 import psutil
 import GPUtil
-from tabulate import tabulate
 
 
 def checkAuth(key):
