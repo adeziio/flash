@@ -4,5 +4,3 @@ Flask
 requests
 flask-cors
 Flask-Mail
-psutil
-gputil

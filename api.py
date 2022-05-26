@@ -27,6 +27,16 @@ def getInsult(who):
     return requests.get("https://insult.mattbas.org/api/en/insult.txt?who="+who.capitalize()).text
 
 
+def getIpLocation(ip):
+    querystring = {"ip": ip, "apikey": os.getenv('FIND_ANY_IP_KEY')}
+    headers = {
+        'x-rapidapi-host': "find-any-ip-address-or-domain-location-world-wide.p.rapidapi.com",
+        'x-rapidapi-key': os.getenv('RAPID_API_KEY')
+    }
+
+    return requests.get("https://find-any-ip-address-or-domain-location-world-wide.p.rapidapi.com/iplocation", headers=headers, params=querystring).json()
+
+
 def getGoogleImage(search):
     headers = {
         'x-rapidapi-host': "google-search3.p.rapidapi.com",

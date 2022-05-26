@@ -1,5 +1,4 @@
 import os
-import platform
 from flask import Flask, jsonify, request
 from flask_mail import Mail, Message
 from flask_cors import CORS
@@ -36,21 +35,36 @@ def status():
 
 @app.route("/~", methods=["GET"])
 def get_my_ip():
-    uname = platform.uname()
     ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
     msg = Message(
-        f'{uname.node}',
+        f'IPv4: {ip}',
         sender=os.getenv('FREEFLASH_MAIL_USERNAME'),
         recipients=[os.getenv('FREEFLASH_MAIL_USERNAME')]
     )
-    output = f'IPv4: {ip}' + "\n\n"
-    output += util.getSystemInfo()
-    output += util.getBootTime()
-    output += util.getCpuInfo()
-    output += util.getMemoryInfo()
-    output += util.getDiskInfo()
-    output += util.getNetworkInfo()
-    output += util.getGpuInfo()
+    location = api.getIpLocation(ip)
+    city = location['city']
+    state = location['state']
+    zipCode = location['zipCode']
+    country = location['country']
+    timezone = location['timezone']
+    longitude = location['longitude']
+    latitude = location['latitude']
+    currencyName = location['currencyName']
+    currencyCode = location['currencyCode']
+    currencySymbol = location['currencySymbol']
+    phoneCode = location['phoneCode']
+
+    output = ""
+    output += f'City: {city}' + "\n"
+    output += f'state: {state}' + "\n"
+    output += f'Zip Code: {zipCode}' + "\n"
+    output += f'country: {country}' + "\n"
+    output += f'Timezone: {timezone}' + "\n"
+    output += f'Longitude: {longitude}' + "\n"
+    output += f'Latitude: {latitude}' + "\n"
+    output += f'Currency: {currencyName} / {currencyCode} / {currencySymbol}' + "\n"
+    output += f'Phone Code: {phoneCode}' + "\n"
+
     msg.body = output
     try:
         mail.send(msg)
