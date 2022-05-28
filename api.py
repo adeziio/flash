@@ -134,11 +134,12 @@ def getYoshiiChatbot(input):
     input = input.lower().replace("+", "%2B")
     input = input.lower().replace("'", "")
 
-    _8BallWords = ["do", "will", "are", "should", "did", "is"]
+    _8BallWords = ["does", "do", "will", "are", "should", "did", "is"]
     output = "Try asking again..."
 
-    if input.startswith(tuple(_8BallWords)) and "?" in input:
+    if "?" in input and any(string in input for string in _8BallWords):
         question = urllib.parse.quote(input)
+        print(question)
         res = res = requests.get(
             "https://8ball.delegator.com/magic/JSON/"+question).json()
         output = res['magic']['answer']
