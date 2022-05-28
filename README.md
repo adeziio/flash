@@ -1,5 +1,5 @@
 # freeflash
-## This is my personal backend.
+## This is a microservices backend.
 ## A collection of open API endpoints made simple.
 
 # Get Started
