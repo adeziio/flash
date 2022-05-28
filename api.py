@@ -2,6 +2,8 @@ import os
 import requests
 import json
 
+import urllib.parse
+
 
 def getRandomQuote():
     return requests.get("https://zenquotes.io/api/random").json()[0]
@@ -133,27 +135,35 @@ def getYoshiiChatbot(input):
     input = input.lower().replace("+", "%2B")
     input = input.lower().replace("'", "")
 
-    url = "https://robomatic-ai.p.rapidapi.com/api.php"
+    _8BallWords = ["do", "will", "are", "should", "did", "is"]
+    output = "Try asking again..."
 
-    payload = "in=" + input + \
-        "F&op=in&cbot=1&SessionID=RapidAPI1&ChatSource=RapidAPI&cbid=1&key=" + \
-        os.getenv("ROBOMATIC_KEY")
-    headers = {
-        'content-type': "application/x-www-form-urlencoded",
-        'x-rapidapi-host': "robomatic-ai.p.rapidapi.com",
-        'x-rapidapi-key': os.getenv("RAPID_API_KEY")
-    }
-
-    res = requests.request(
-        "POST", url, data=payload, headers=headers).json()
-    output = res['out']
-    output = output.replace("I said it before, ", "")
-    output = output.replace("RoboMatic", "yoshii")
-    output = output.replace("Ehab Elagizy", "Aden Tran")
-    output = output.replace("back in 2001", "back in 2021")
-    output = output.replace("since 1995", "since 2021")
-    output = output.replace("Later in 2011", "In 2021")
-    output = output.replace("Egyptian", "Vietnamese")
+    if input.startswith(tuple(_8BallWords)) and "?" in input:
+        question = urllib.parse.quote(input)
+        res = res = requests.get(
+            "https://8ball.delegator.com/magic/JSON/"+question).json()
+        output = res['magic']['answer']
+    else:
+        payload = "in=" + input + \
+            "F&op=in&cbot=1&SessionID=RapidAPI1&ChatSource=RapidAPI&cbid=1&key=" + \
+            os.getenv("ROBOMATIC_KEY")
+        headers = {
+            'content-type': "application/x-www-form-urlencoded",
+            'x-rapidapi-host': "robomatic-ai.p.rapidapi.com",
+            'x-rapidapi-key': os.getenv("RAPID_API_KEY")
+        }
+        res = requests.post(
+            "https://robomatic-ai.p.rapidapi.com/api.php", data=payload, headers=headers).json()
+        output = res['out']
+        output = output.replace("I said it before, ", "")
+        output = output.replace("RoboMatic", "yoshii")
+        output = output.replace("Ehab Elagizy", "Aden Tran")
+        output = output.replace("back in 2001", "back in 2021")
+        output = output.replace("since 1995", "since 2021")
+        output = output.replace("Later in 2011", "In 2021")
+        output = output.replace("Egyptian", "Vietnamese")
+        output = output.replace(
+            "Seems you repeat it several times......\n", "")
 
     return {
         "output": output
