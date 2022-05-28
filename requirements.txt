@@ -2,6 +2,5 @@ pip
 python-dotenv
 Flask
 requests
-urllib3
 flask-cors
 Flask-Mail
