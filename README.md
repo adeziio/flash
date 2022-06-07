@@ -1,4 +1,5 @@
 # freeflash
+## Host: https://freeflash.vercel.app/
 ## This is a microservices backend.
 ## A collection of open API endpoints made simple.
 
