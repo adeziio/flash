@@ -6,6 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 import api
 import util
 import database
+import pymysql
 
 # Environment Variables
 load_dotenv(find_dotenv())
@@ -223,5 +224,4 @@ def yoshii_karma_update():
 
 # Main
 if __name__ == '__main__':
-    database.initialize_db()
     app.run()

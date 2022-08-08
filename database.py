@@ -1,24 +1,24 @@
 import os
 import pymysql
 
-db = None
-cursor = None
+# db = None
+# cursor = None
 
 
-def initialize_db():
-    print("initializing db...")
-    global db
-    global cursor
+# def initialize_db():
+#     print("initializing db...")
+#     global db
+#     global cursor
 
-    db = pymysql.connect(
-        host=os.getenv('AWS_RDS_HOST'), user=os.getenv('AWS_RDS_USER'), password=os.getenv('AWS_RDS_PASS'))
-    cursor = db.cursor()
+#     db = pymysql.connect(
+#         host=os.getenv('AWS_RDS_HOST'), user=os.getenv('AWS_RDS_USER'), password=os.getenv('AWS_RDS_PASS'))
+#     cursor = db.cursor()
 
 
 def update_karma(userId, serverId, sentiment):
-    global db
-    global cursor
-
+    db = pymysql.connect(
+        host=os.getenv('AWS_RDS_HOST'), user=os.getenv('AWS_RDS_USER'), password=os.getenv('AWS_RDS_PASS'))
+    cursor = db.cursor()
     # check if row already exists in database
     sql = f'''
         SELECT * 
@@ -26,7 +26,6 @@ def update_karma(userId, serverId, sentiment):
         WHERE user_id='{userId}'
         AND server_id='{serverId}'
     '''
-    print(f"host: {os.getenv('AWS_RDS_HOST')} user: {os.getenv('AWS_RDS_USER')}")
 
     # if row exist in database, update
     if (cursor.execute(sql) == 1):
