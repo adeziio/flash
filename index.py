@@ -208,16 +208,31 @@ def yoshii():
     return "Unauthorized."
 
 
-@app.route("/yoshii-karma-update", methods=['POST'])
-def yoshii_karma_update():
+@app.route("/yoshii-update-karma-point", methods=['POST'])
+def yoshii_update_karma_point():
     key = request.headers.get("FREEFLASH_API_KEY")
     if (util.checkAuth(key)):
         body = request.json
         userId = body["userId"]
         serverId = body["serverId"]
         sentiment = body["sentiment"]
-        if (sentiment):
-            return database.update_karma(userId, serverId, sentiment)
+        if (userId and serverId and sentiment):
+            return database.update_karma_point(userId, serverId, sentiment)
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
+@app.route("/yoshii-select-karma-point", methods=['POST'])
+def yoshii_select_karma_point():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (util.checkAuth(key)):
+        body = request.json
+        userId = body["userId"]
+        serverId = body["serverId"]
+        if (userId and serverId):
+            return jsonify({
+                "karma_point": database.select_karma_point(userId, serverId)
+            })
         return "Invalid parameter."
     return "Unauthorized."
 

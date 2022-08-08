@@ -9,13 +9,13 @@ def connect():
     return db, cursor
 
 
-def update_karma(userId, serverId, sentiment):
+def update_karma_point(userId, serverId, sentiment):
     if (sentiment == 'positive' or sentiment == 'negative'):
         db, cursor = connect()
 
         # check if row already exists in database
         sql = f'''
-            SELECT * 
+            SELECT karma_point 
             FROM yoshii.karma
             WHERE user_id='{userId}'
             AND server_id='{serverId}'
@@ -24,28 +24,28 @@ def update_karma(userId, serverId, sentiment):
         # if row exist in database, update
         if (cursor.execute(sql) == 1):
             data = cursor.fetchall()
-            new_karma = int(data[0][3])
+            karma_point = int(data[0][0])
             if (sentiment == 'positive'):
-                new_karma += 1
+                karma_point += 1
             elif (sentiment == 'negative'):
-                new_karma -= 1
+                karma_point -= 1
             sql = f'''
                 UPDATE yoshii.karma
-                SET karma_point={new_karma}
+                SET karma_point={karma_point}
                 WHERE user_id='{userId}'
                 AND server_id='{serverId}'
             '''
 
         # if row does not exist in database, insert
         else:
-            new_karma = 0
+            karma_point = 0
             if (sentiment == 'positive'):
-                new_karma += 1
+                karma_point += 1
             elif (sentiment == 'negative'):
-                new_karma -= 1
+                karma_point -= 1
             sql = f'''
                 INSERT INTO yoshii.karma
-                VALUES (default, '{userId}', '{serverId}', {new_karma})
+                VALUES (default, '{userId}', '{serverId}', {karma_point})
             '''
 
         # execute and commit
@@ -53,3 +53,23 @@ def update_karma(userId, serverId, sentiment):
         db.commit()
         db.close()
     return ""
+
+
+def select_karma_point(userId, serverId):
+    karma_point = 0
+    db, cursor = connect()
+
+    # check if row already exists in database
+    sql = f'''
+        SELECT karma_point 
+        FROM yoshii.karma
+        WHERE user_id='{userId}'
+        AND server_id='{serverId}'
+    '''
+
+    # if row exist in database, update
+    if (cursor.execute(sql) == 1):
+        data = cursor.fetchall()
+        karma_point = int(data[0][0])
+    db.close()
+    return karma_point
