@@ -216,7 +216,7 @@ def yoshii_karma_update():
         userId = body["userId"]
         serverId = body["serverId"]
         sentiment = body["sentiment"]
-        if (input):
+        if (sentiment):
             return database.update_karma(userId, serverId, sentiment)
         return "Invalid parameter."
     return "Unauthorized."
