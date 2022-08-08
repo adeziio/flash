@@ -5,6 +5,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
 import api
 import util
+import database
 
 # Environment Variables
 load_dotenv(find_dotenv())
@@ -206,6 +207,25 @@ def yoshii():
     return "Unauthorized."
 
 
+@app.route("/yoshii-karma-update", methods=['POST'])
+def yoshii_karma_update():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (util.checkAuth(key)):
+        body = request.json
+        userId = body["userId"]
+        userName = body["userName"]
+        serverId = body["serverId"]
+        serverName = body["serverName"]
+        userNameInServer = body["userNameInServer"]
+        sentiment = body["sentiment"]
+        if (input):
+            return database.update_karma(userId, userName, serverId, serverName,
+                                         userNameInServer, sentiment)
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
 # Main
 if __name__ == '__main__':
+    database.initialize_db()
     app.run()
