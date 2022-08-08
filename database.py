@@ -59,7 +59,6 @@ def select_karma_point(userId, serverId):
     karma_point = 0
     db, cursor = connect()
 
-    # check if row already exists in database
     sql = f'''
         SELECT karma_point 
         FROM yoshii.karma
@@ -67,7 +66,6 @@ def select_karma_point(userId, serverId):
         AND server_id='{serverId}'
     '''
 
-    # if row exist in database, update
     if (cursor.execute(sql) == 1):
         data = cursor.fetchall()
         karma_point = int(data[0][0])
