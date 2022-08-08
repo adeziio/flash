@@ -51,4 +51,5 @@ def update_karma(userId, serverId, sentiment):
         # execute and commit
         cursor.execute(sql)
         db.commit()
+        db.close()
     return ""
