@@ -213,14 +213,10 @@ def yoshii_karma_update():
     if (util.checkAuth(key)):
         body = request.json
         userId = body["userId"]
-        userName = body["userName"]
         serverId = body["serverId"]
-        serverName = body["serverName"]
-        userNameInServer = body["userNameInServer"]
         sentiment = body["sentiment"]
         if (input):
-            return database.update_karma(userId, userName, serverId, serverName,
-                                         userNameInServer, sentiment)
+            return database.update_karma(userId, serverId, sentiment)
         return "Invalid parameter."
     return "Unauthorized."
 

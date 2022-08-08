@@ -14,8 +14,7 @@ def initialize_db():
     cursor = db.cursor()
 
 
-def update_karma(userId, userName, serverId, serverName,
-                 userNameInServer, sentiment):
+def update_karma(userId, serverId, sentiment):
     global db
     global cursor
 
@@ -24,16 +23,13 @@ def update_karma(userId, userName, serverId, serverName,
         SELECT * 
         FROM yoshii.karma
         WHERE user_id='{userId}'
-        AND user_name='{userName}'
         AND server_id='{serverId}'
-        AND server_name='{serverName}'
-        AND user_name_in_server='{userNameInServer}'
     '''
 
     # if row exist in database, update
     if (cursor.execute(sql) == 1):
         data = cursor.fetchall()
-        new_karma = int(data[0][6])
+        new_karma = int(data[0][3])
         if (sentiment == 'positive'):
             new_karma += 1
         elif (sentiment == 'negative'):
@@ -44,10 +40,7 @@ def update_karma(userId, userName, serverId, serverName,
             UPDATE yoshii.karma
             SET karma_point={new_karma}
             WHERE user_id='{userId}'
-            AND user_name='{userName}'
             AND server_id='{serverId}'
-            AND server_name='{serverName}'
-            AND user_name_in_server='{userNameInServer}'
         '''
 
     # if row does not exist in database, insert
@@ -59,7 +52,7 @@ def update_karma(userId, userName, serverId, serverName,
             new_karma -= 1
         sql = f'''
             INSERT INTO yoshii.karma
-            VALUES (default, '{userId}', '{userName}', '{serverId}', '{serverName}', '{userNameInServer}', {new_karma})
+            VALUES (default, '{userId}', '{serverId}', {new_karma})
         '''
 
     # execute and commit
