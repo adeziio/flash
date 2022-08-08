@@ -6,11 +6,16 @@ from dotenv import load_dotenv, find_dotenv
 import api
 import util
 
+# Environment Variables
 load_dotenv(find_dotenv())
 
+# Flask
 app = Flask(__name__)
+
+# Cors
 CORS(app)
 
+# Mail
 mail = Mail(app)
 app.config['MAIL_SERVER'] = 'smtp.mail.yahoo.com'
 app.config['MAIL_PORT'] = 465
@@ -201,5 +206,6 @@ def yoshii():
     return "Unauthorized."
 
 
+# Main
 if __name__ == '__main__':
     app.run()

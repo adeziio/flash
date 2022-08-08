@@ -130,14 +130,15 @@ def getFileExtraction(file):
 
 
 def getYoshiiChatbot(input):
-    input = input.lower().replace("yoshii", "RoboMatic")
-    input = input.lower().replace("+", "%2B")
-    input = input.lower().replace("'", "")
+    input = input.lower()
+    input = input.replace("yoshii", "RoboMatic")
+    input = input.replace("+", "%2B")
+    input = input.replace("'", "")
 
-    _8BallWords = ["does", "do", "will", "are", "should", "did", "is"]
+    Magic8BallWords = ["does", "do", "will", "are", "should", "did", "is"]
     output = "Try asking again..."
 
-    if "?" in input and any(string in input for string in _8BallWords):
+    if "?" in input and any(string in input for string in Magic8BallWords):
         question = urllib.parse.quote(input)
         print(question)
         res = res = requests.get(
