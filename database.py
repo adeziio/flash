@@ -45,7 +45,7 @@ def update_karma_point(userId, serverId, sentiment):
                 karma_point -= 1
             sql = f'''
                 INSERT INTO yoshii.karma
-                VALUES (default, '{userId}', '{serverId}', {karma_point})
+                VALUES ('{userId}', '{serverId}', {karma_point})
             '''
 
         # execute and commit
