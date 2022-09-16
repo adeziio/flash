@@ -6,7 +6,7 @@ from dotenv import load_dotenv, find_dotenv
 import api
 import util
 import database
-import pymysql
+
 
 # Environment Variables
 load_dotenv(find_dotenv())
