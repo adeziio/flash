@@ -140,7 +140,7 @@ def getYoshiiChatbot(input):
 
     if "?" in input and any(string in input for string in Magic8BallWords):
         question = urllib.parse.quote(input)
-        print(question)
+
         res = res = requests.get(
             "https://8ball.delegator.com/magic/JSON/"+question).json()
         output = res['magic']['answer']
