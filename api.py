@@ -58,9 +58,7 @@ def getGoogleSearch(search):
 
 def getSentimentAnalysis(text):
     url = "https://text-sentiment.p.rapidapi.com/analyze"
-    payload = json.dumps({
-        "text": text
-    })
+    payload = f"text={text}"
     headers = {
         "content-type": "application/x-www-form-urlencoded",
         "X-RapidAPI-Host": "text-sentiment.p.rapidapi.com",
