@@ -57,14 +57,13 @@ def getGoogleSearch(search):
 
 
 def getSentimentAnalysis(text):
-    url = "https://text-analysis12.p.rapidapi.com/sentiment-analysis/api/v1.1"
+    url = "https://text-sentiment.p.rapidapi.com/analyze"
     payload = json.dumps({
-        "language": "english",
         "text": text
     })
     headers = {
-        'content-type': "application/json",
-        'x-rapidapi-host': "text-analysis12.p.rapidapi.com",
+        "content-type": "application/x-www-form-urlencoded",
+        "X-RapidAPI-Host": "text-sentiment.p.rapidapi.com",
         'x-rapidapi-key': os.getenv("RAPID_API_KEY")
     }
 
