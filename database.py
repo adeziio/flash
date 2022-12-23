@@ -71,3 +71,20 @@ def select_karma_point(userId, serverId):
         karma_point = int(data[0][0])
     db.close()
     return karma_point
+
+
+def select_karma_ranking(serverId):
+    data = []
+    db, cursor = connect()
+
+    sql = f'''
+        SELECT * 
+        FROM yoshii.karma
+        WHERE server_id='{serverId}'
+        ORDER BY karma_point desc
+    '''
+
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    db.close()
+    return data

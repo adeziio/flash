@@ -237,6 +237,20 @@ def yoshii_select_karma_point():
     return "Unauthorized."
 
 
+@app.route("/yoshii-select-karma-ranking", methods=['POST'])
+def yoshii_select_karma_ranking():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (util.checkAuth(key)):
+        body = request.json
+        serverId = body["serverId"]
+        if (serverId):
+            return jsonify({
+                "karma_ranking": database.select_karma_ranking(serverId)
+            })
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
 # Main
 if __name__ == '__main__':
     app.run()
