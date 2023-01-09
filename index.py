@@ -243,9 +243,10 @@ def yoshii_select_karma_ranking():
     if (util.checkAuth(key)):
         body = request.json
         serverId = body["serverId"]
+        karma_year = body["karmaYear"]
         if (serverId):
             return jsonify({
-                "karma_ranking": database.select_karma_ranking(serverId)
+                "karma_ranking": database.select_karma_ranking(serverId, karma_year)
             })
         return "Invalid parameter."
     return "Unauthorized."

@@ -1,6 +1,10 @@
 import os
 import pymysql
 
+from datetime import date
+
+current_year = str(date.today().year)
+
 
 def connect():
     db = pymysql.connect(
@@ -19,6 +23,7 @@ def update_karma_point(userId, serverId, sentiment):
             FROM yoshii.karma
             WHERE user_id='{userId}'
             AND server_id='{serverId}'
+            AND karma_year='{current_year}'
         '''
 
         # if row exist in database, update
@@ -34,6 +39,7 @@ def update_karma_point(userId, serverId, sentiment):
                 SET karma_point={karma_point}
                 WHERE user_id='{userId}'
                 AND server_id='{serverId}'
+                AND karma_year='{current_year}'
             '''
 
         # if row does not exist in database, insert
@@ -45,7 +51,7 @@ def update_karma_point(userId, serverId, sentiment):
                 karma_point -= 1
             sql = f'''
                 INSERT INTO yoshii.karma
-                VALUES ('{userId}', '{serverId}', {karma_point})
+                VALUES ('{userId}', '{serverId}', '{current_year}', {karma_point})
             '''
 
         # execute and commit
@@ -64,6 +70,7 @@ def select_karma_point(userId, serverId):
         FROM yoshii.karma
         WHERE user_id='{userId}'
         AND server_id='{serverId}'
+        AND karma_year='{current_year}'
     '''
 
     if (cursor.execute(sql) == 1):
@@ -73,14 +80,16 @@ def select_karma_point(userId, serverId):
     return karma_point
 
 
-def select_karma_ranking(serverId):
+def select_karma_ranking(serverId, year):
     data = []
     db, cursor = connect()
 
+    k_year = year if (year is not None and year != "") else current_year
     sql = f'''
         SELECT * 
         FROM yoshii.karma
         WHERE server_id='{serverId}'
+        AND karma_year='{k_year}'
         ORDER BY karma_point desc
     '''
 
