@@ -143,6 +143,7 @@ def getYoshiiChatbot(input):
             "input": input
         }
         headers = {
+            "Content-Type": "application/json",
             "GIDEON_API_KEY":  os.getenv("GIDEON_API_KEY")
         }
         res = requests.post(
