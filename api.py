@@ -139,9 +139,9 @@ def getYoshiiChatbot(input):
             "https://8ball.delegator.com/magic/JSON/"+question).json()
         output = res['magic']['answer']
     else:
-        payload = {
+        payload = json.dumps({
             "input": input
-        }
+        })
         headers = {
             "Content-Type": "application/json",
             "GIDEON_API_KEY":  os.getenv("GIDEON_API_KEY")
