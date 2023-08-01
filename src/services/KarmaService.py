@@ -1,5 +1,4 @@
 import os
-from datetime import datetime
 from cryptography.fernet import Fernet
 from boto3.dynamodb.conditions import Attr
 from datetime import date
