@@ -128,27 +128,16 @@ def getFileExtraction(file):
 
 def getYoshiiChatbot(input):
     input = input.lower()
-
-    Magic8BallWords = ["does", "do", "will", "are", "should", "did", "is"]
-    output = "Try asking again..."
-
-    if "?" in input and any(string in input for string in Magic8BallWords):
-        question = urllib.parse.quote(input)
-
-        res = res = requests.get(
-            "https://8ball.delegator.com/magic/JSON/"+question).json()
-        output = res['magic']['answer']
-    else:
-        payload = json.dumps({
-            "input": input
-        })
-        headers = {
-            "Content-Type": "application/json",
-            "GIDEON_API_KEY":  os.getenv("GIDEON_API_KEY")
-        }
-        res = requests.post(
-            "https://gideon-ai.vercel.app/gpt-3.5-turbo", data=payload, headers=headers).json()
-        output = res['output']
+    payload = json.dumps({
+        "input": input
+    })
+    headers = {
+        "Content-Type": "application/json",
+        "GIDEON_API_KEY":  os.getenv("GIDEON_API_KEY")
+    }
+    res = requests.post(
+        "https://gideon-ai.vercel.app/gpt-3.5-turbo", data=payload, headers=headers).json()
+    output = res['output']
     return {
         "output": output
     }

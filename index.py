@@ -3,9 +3,8 @@ from flask import Flask, jsonify, request
 from flask_mail import Mail, Message
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
-import api
-import util
-import database
+from src.utils import auth
+from src.utils import api
 
 
 # Environment Variables
@@ -83,7 +82,7 @@ def get_my_ip():
 @app.route("/quote", methods=['GET'])
 def quote():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         mode = request.args.get("mode")
         if (mode == "today"):
             return api.getTodayQuote()
@@ -96,7 +95,7 @@ def quote():
 @app.route("/cat", methods=['GET'])
 def cat():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         mode = request.args.get("mode")
         if (mode == "image"):
             return api.getCatImage()
@@ -109,7 +108,7 @@ def cat():
 @app.route("/joke", methods=['GET'])
 def joke():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         return api.getJoke()
     return "Unauthorized."
 
@@ -117,7 +116,7 @@ def joke():
 @app.route("/insult", methods=['GET'])
 def insult():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         who = request.args.get("who")
         if (who):
             return api.getInsult(who)
@@ -128,7 +127,7 @@ def insult():
 @app.route("/google", methods=['POST'])
 def google():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         body = request.json
         mode = body["mode"]
         search = body["search"]
@@ -143,7 +142,7 @@ def google():
 @app.route("/sentiment-analysis", methods=['GET'])
 def sentimentAnalysis():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         text = request.args.get("text")
         if (text):
             return api.getSentimentAnalysis(text)
@@ -154,7 +153,7 @@ def sentimentAnalysis():
 @app.route("/summarize-text", methods=['GET'])
 def summarizeText():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         text = request.args.get("text")
         if (text):
             return api.getSummarizeText(text)
@@ -165,7 +164,7 @@ def summarizeText():
 @app.route("/language-detection", methods=['GET'])
 def languageDetection():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         text = request.args.get("text")
         if (text):
             return api.getLanguageDetection(text)
@@ -176,7 +175,7 @@ def languageDetection():
 @app.route("/website-extraction", methods=['POST'])
 def websiteExtraction():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         body = request.json
         text = body["url"]
         if (text):
@@ -188,7 +187,7 @@ def websiteExtraction():
 @app.route("/file-extraction", methods=['POST'])
 def fileExtraction():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         file = request.files['input_file']
         if (file):
             return api.getFileExtraction(file)
@@ -199,7 +198,7 @@ def fileExtraction():
 @app.route("/yoshii", methods=['POST'])
 def yoshii():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         body = request.json
         input = body["input"]
         if (input):
@@ -211,7 +210,7 @@ def yoshii():
 @app.route("/yoshii-update-karma-point", methods=['POST'])
 def yoshii_update_karma_point():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         body = request.json
         userId = body["userId"]
         serverId = body["serverId"]
@@ -225,7 +224,7 @@ def yoshii_update_karma_point():
 @app.route("/yoshii-select-karma-point", methods=['POST'])
 def yoshii_select_karma_point():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         body = request.json
         userId = body["userId"]
         serverId = body["serverId"]
@@ -240,7 +239,7 @@ def yoshii_select_karma_point():
 @app.route("/yoshii-select-karma-ranking", methods=['POST'])
 def yoshii_select_karma_ranking():
     key = request.headers.get("FREEFLASH_API_KEY")
-    if (util.checkAuth(key)):
+    if (auth.checkAuth(key)):
         body = request.json
         serverId = body["serverId"]
         karma_year = body["karmaYear"]
