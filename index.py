@@ -3,9 +3,9 @@ from flask import Flask, jsonify, request
 from flask_mail import Mail, Message
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
+from src.services import KarmaService
 from src.utils import auth
 from src.utils import api
-
 
 # Environment Variables
 load_dotenv(find_dotenv())
@@ -207,8 +207,8 @@ def yoshii():
     return "Unauthorized."
 
 
-@app.route("/yoshii-update-karma-point", methods=['POST'])
-def yoshii_update_karma_point():
+@app.route("/yoshii-karma-add-point", methods=['POST'])
+def yoshii_karma_add_point():
     key = request.headers.get("FREEFLASH_API_KEY")
     if (auth.checkAuth(key)):
         body = request.json
@@ -216,13 +216,13 @@ def yoshii_update_karma_point():
         serverId = body["serverId"]
         sentiment = body["sentiment"]
         if (userId and serverId and sentiment):
-            return database.update_karma_point(userId, serverId, sentiment)
+            return KarmaService.addPoint(userId, serverId, sentiment)
         return "Invalid parameter."
     return "Unauthorized."
 
 
-@app.route("/yoshii-select-karma-point", methods=['POST'])
-def yoshii_select_karma_point():
+@app.route("/yoshii-karma-get-point", methods=['POST'])
+def yoshii_karma_get_point():
     key = request.headers.get("FREEFLASH_API_KEY")
     if (auth.checkAuth(key)):
         body = request.json
@@ -230,22 +230,22 @@ def yoshii_select_karma_point():
         serverId = body["serverId"]
         if (userId and serverId):
             return jsonify({
-                "karma_point": database.select_karma_point(userId, serverId)
+                "point": KarmaService.getPoint(userId, serverId)
             })
         return "Invalid parameter."
     return "Unauthorized."
 
 
-@app.route("/yoshii-select-karma-ranking", methods=['POST'])
-def yoshii_select_karma_ranking():
+@app.route("/yoshii-karma-get-ranking", methods=['POST'])
+def yoshii_karma_get_ranking():
     key = request.headers.get("FREEFLASH_API_KEY")
     if (auth.checkAuth(key)):
         body = request.json
         serverId = body["serverId"]
-        karma_year = body["karmaYear"]
+        year = body["year"]
         if (serverId):
             return jsonify({
-                "karma_ranking": database.select_karma_ranking(serverId, karma_year)
+                "ranking": KarmaService.getRanking(serverId, year)
             })
         return "Invalid parameter."
     return "Unauthorized."
