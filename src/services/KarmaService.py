@@ -12,11 +12,11 @@ fernet = Fernet(key)
 
 current_year = str(date.today().year)
 
-def hasEntry(userId, serverId):
+def hasEntry(id):
     ret = False
     try:
         response = AWSController.KarmaController.scan(
-            FilterExpression=Attr('user_id').eq(userId) and Attr('server_id').eq(serverId) and Attr('year').eq(current_year)
+            FilterExpression=Attr('id').eq(id) & Attr('karma_year').eq(current_year)
         )
         if (response['ResponseMetadata']['HTTPStatusCode'] == 200):
             if ('Items' in response):
@@ -30,7 +30,8 @@ def hasEntry(userId, serverId):
 def addPoint(userId, serverId, sentiment):
     ret = "Success"
     if (sentiment == 'positive' or sentiment == 'negative'):
-        if (not hasEntry(userId, serverId)):
+        id = f'{str(userId)}-{str(serverId)}'
+        if (not hasEntry(id)):
             point = 0
             if (sentiment == 'positive'):
                 point += 1
@@ -39,17 +40,16 @@ def addPoint(userId, serverId, sentiment):
             try:
                 AWSController.KarmaController.put_item(
                     Item={
-                        'user_id': userId,
-                        'server_id': serverId,
-                        'year':current_year,
-                        'point': point
+                        'id': id,
+                        'karma_year':current_year,
+                        'karma_point': point
                     }
                 )
             except Exception as e:
                 ret = "Error"
                 print(e)
         else:
-            point = getPoint(userId, serverId)
+            point = getPoint(id)
             if (sentiment == 'positive'):
                 point += 1
             elif (sentiment == 'negative'):
@@ -57,11 +57,13 @@ def addPoint(userId, serverId, sentiment):
             try:
                 AWSController.KarmaController.update_item(
                     Key={
-                        'user_id': userId
+                        'id': id
                     },
-                    UpdateExpression="SET point = :point",
+                    UpdateExpression="SET karma_point = :kpoint",
+                    ConditionExpression="karma_year =:kyear",
                     ExpressionAttributeValues={
-                        ":point": point,
+                        ":kpoint": point,
+                        ":kyear": current_year,
                     },
                 )
             except Exception as e:
@@ -70,25 +72,25 @@ def addPoint(userId, serverId, sentiment):
     return ret
 
 
-def getPoint(userId, serverId):
+def getPoint(id):
     point = 0
     try:
         response = AWSController.KarmaController.scan(
-            FilterExpression=Attr('user_id').eq(userId) and Attr('server_id').eq(serverId) and Attr('year').eq(current_year)
+            FilterExpression=Attr('id').eq(id) & Attr('karma_year').eq(current_year)
         )
         if (response['ResponseMetadata']['HTTPStatusCode'] == 200):
             if ('Items' in response):
-                point =  int(response['Items'][0]['point'])
+                point =  int(response['Items'][0]['karma_point'])
     except Exception as e:
         print(e)
     return point
 
-def getRanking(serverId, year):
+def getRanking(serverId, karmaYear):
     data = []
-    year = year if (year is not None and year != "") else current_year
+    karmaYear = karmaYear if (karmaYear is not None and karmaYear != "") else current_year
     try:
         response = AWSController.KarmaController.scan(
-            FilterExpression=Attr('server_id').eq(serverId) and Attr('year').eq(year)
+            FilterExpression=Attr('id').contains(str(serverId)) & Attr('karma_year').eq(karmaYear)
         )
         if (response['ResponseMetadata']['HTTPStatusCode'] == 200):
             if ('Items' in response):
