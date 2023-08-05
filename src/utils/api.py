@@ -65,7 +65,15 @@ def getSentimentAnalysis(text):
         'x-rapidapi-key': os.getenv("RAPID_API_KEY")
     }
 
-    return requests.post(url, data=payload, headers=headers).json()
+    response =  requests.post(url, data=payload, headers=headers).json()
+    pos = int(response['pos'])
+    neg = int(response['neg'])
+    sentiment = "neutral"
+    if (pos > neg):
+        sentiment = "positive"
+    elif (pos < neg):
+        sentiment = "negative"
+    return {'sentiment': sentiment}
 
 
 def getSummarizeText(text):
