@@ -65,7 +65,7 @@ def getSentimentAnalysis(text):
         'x-rapidapi-key': os.getenv("RAPID_API_KEY")
     }
 
-    response =  requests.post(url, data=payload, headers=headers).json()
+    response = requests.post(url, data=payload, headers=headers).json()
     pos = int(response['pos'])
     neg = int(response['neg'])
     sentiment = "neutral"
@@ -136,7 +136,11 @@ def getFileExtraction(file):
 
 def getYoshiiChatbot(input):
     input = input.lower()
+    model = "language"
+    if "image" in input:
+        model = "image"
     payload = json.dumps({
+        "model": model,
         "input": input
     })
     headers = {
@@ -144,7 +148,7 @@ def getYoshiiChatbot(input):
         "GIDEON_API_KEY":  os.getenv("GIDEON_API_KEY")
     }
     res = requests.post(
-        "https://gideon-ai.vercel.app/gpt-3.5-turbo", data=payload, headers=headers).json()
+        "https://gideon-ai.vercel.app/openai", data=payload, headers=headers).json()
     output = res['output']
     return {
         "output": output
