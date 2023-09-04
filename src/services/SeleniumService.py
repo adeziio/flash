@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium_stealth import stealth
 
 from time import sleep
@@ -15,24 +14,24 @@ def pause_for(seconds: int, fudge: int = 1):
 def driver(headless=True):
 
     # Set Browser Options
-    opts = Options()
+    options = webdriver.ChromeOptions()
+    service = Service("chromedriver.exe")
     if headless:
-        opts.add_argument('--headless=new')
-    opts.add_argument('--start-maximized')
-    opts.add_argument('disable-infobars')
-    opts.add_argument('--disable-notifications')
-    opts.add_argument('--disable-gpu')
-    opts.add_argument('--mute-audio')
-    opts.add_argument('log-level=3')
+        options.add_argument('--headless=new')
+    options.add_argument('--start-maximized')
+    options.add_argument('disable-infobars')
+    options.add_argument('--disable-notifications')
+    options.add_argument('--disable-gpu')
+    options.add_argument('--mute-audio')
+    options.add_argument('log-level=3')
 
     # Desired Capabilities
     loggingPrefs = {}
     loggingPrefs['performance'] = "ALL"
-    opts.set_capability('goog:loggingPrefs', loggingPrefs)
+    options.set_capability('goog:loggingPrefs', loggingPrefs)
 
     # Launch Browser
-    driver = webdriver.Chrome(service=Service(
-        ChromeDriverManager().install()), options=opts)
+    driver = webdriver.Chrome(service=service, options=options)
 
     stealth(driver,
             languages=["en-US", "en"],
