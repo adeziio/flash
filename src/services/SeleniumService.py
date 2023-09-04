@@ -17,7 +17,7 @@ def driver(headless=True):
     # Set Browser Options
     options = webdriver.ChromeOptions()
     service = webdriver.ChromeService(
-        executable_path="./src/drivers/chromedriver.exe")
+        executable_path="./src/services/chromedriver.exe")
     if headless:
         options.add_argument('--headless=new')
     options.add_argument('--start-maximized')
