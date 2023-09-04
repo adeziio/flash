@@ -1,5 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium_stealth import stealth
 
 from time import sleep
@@ -16,7 +18,7 @@ def driver(headless=True):
     opts = Options()
     if headless:
         opts.add_argument('--headless=new')
-    opts.add_argument('start-maximized')
+    opts.add_argument('--start-maximized')
     opts.add_argument('disable-infobars')
     opts.add_argument('--disable-notifications')
     opts.add_argument('--disable-gpu')
@@ -29,7 +31,8 @@ def driver(headless=True):
     opts.set_capability('goog:loggingPrefs', loggingPrefs)
 
     # Launch Browser
-    driver = webdriver.Chrome(options=opts)
+    driver = webdriver.Chrome(options=opts, service=ChromeService(
+        ChromeDriverManager().install()))
 
     stealth(driver,
             languages=["en-US", "en"],
