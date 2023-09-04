@@ -4,6 +4,7 @@ from flask_mail import Mail, Message
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
 from src.services import KarmaService
+from src.services import ScraperService
 from src.utils import auth
 from src.utils import api
 
@@ -246,6 +247,20 @@ def yoshii_karma_get_ranking():
         if (serverId):
             return jsonify({
                 "ranking": KarmaService.getRanking(serverId, karmaYear)
+            })
+        return "Invalid parameter."
+    return "Unauthorized."
+
+
+@app.route("/scraper", methods=['POST'])
+def scraper():
+    key = request.headers.get("FREEFLASH_API_KEY")
+    if (auth.checkAuth(key)):
+        body = request.json
+        url = body["url"]
+        if (url):
+            return jsonify({
+                "comments": ScraperService.getComments(url)
             })
         return "Invalid parameter."
     return "Unauthorized."
