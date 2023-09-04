@@ -35,5 +35,6 @@ def getComments(url):
     driver = SeleniumService.driver()
     if scraper == "bitchute":
         comments = scrape_bitchute(driver, url)
+    driver.quit()
 
     return comments
