@@ -1,6 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium_stealth import stealth
 
@@ -31,8 +31,8 @@ def driver(headless=True):
     opts.set_capability('goog:loggingPrefs', loggingPrefs)
 
     # Launch Browser
-    driver = webdriver.Chrome(options=opts, service=ChromeService(
-        ChromeDriverManager().install()))
+    driver = webdriver.Chrome(service=Service(
+        ChromeDriverManager().install()), options=opts)
 
     stealth(driver,
             languages=["en-US", "en"],
