@@ -1,7 +1,7 @@
-import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+
 from selenium_stealth import stealth
 
 from time import sleep
@@ -15,9 +15,8 @@ def pause_for(seconds: int, fudge: int = 1):
 def driver(headless=True):
 
     # Set Browser Options
-    options = webdriver.ChromeOptions()
-    service = webdriver.ChromeService(
-        executable_path="./src/drivers/chromedriver.exe")
+    options = Options()
+    service = Service()
     if headless:
         options.add_argument('--headless=new')
     options.add_argument('--start-maximized')
